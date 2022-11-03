@@ -93,7 +93,7 @@ public class Lavanderia
             else
             {
                 // istazione un asciugatrice vuota
-                asciugatriciArray[i] = new Asciugatrici("Lavatrice " + (i + 1), false, null, 0);
+                asciugatriciArray[i] = new Asciugatrici("Ascigatrice " + (i + 1), false, null, 0);
             }
 
         }
