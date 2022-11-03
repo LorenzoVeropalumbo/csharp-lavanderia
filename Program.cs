@@ -1,4 +1,5 @@
 ﻿// CREAZIONE ACQUISTO GETTONI
+using System;
 using System.Diagnostics;
 using System.Reflection.PortableExecutable;
 
@@ -47,11 +48,6 @@ public class Lavanderia
     private Asciugatrici[] asciugatriciArray;
 
     //instazio i programmi cosi da poterli inserire nelle lavatrici appena create
-    public Programmi rinfrescante = new Programmi("Rinfrescante", 2, 20, 20, 5);
-    public Programmi rinnovante = new Programmi("Rinnovante", 3, 40, 40, 10);
-    public Programmi sgrassante = new Programmi("Sgrassante", 4, 60, 60, 15);
-    public Programmi rapido = new Programmi("Rapido", 2, 20, 0, 0);
-    public Programmi intenso = new Programmi("Intenso", 4, 20, 0, 0);
 
     public Lavanderia()
     {
@@ -61,41 +57,13 @@ public class Lavanderia
         //instazio le lavatrici
         for (int i = 0; i < 5; i++)
         {
-            Random rnd = new Random();
-            // generazione del booleano per capire se la lavatrice è attiva
-            int active = rnd.Next(1, 3);
-            // genero un random per sapere quale programma è attivo
-            int programma = rnd.Next(1, 4);
-
-            if (active == 1)
-            {
-                //questa funzione è riutilizabile in seguito quando vorremo attivare una lavatrice prendendo un valore da 1 a 3 e un indice prende un programma e lo fa eseguire alla lavatrice 
-                loadMachineLavatrice(programma, i);
-            }
-            else
-            {
-                // istanzio la lavatrice disattiva
-                lavatriciArray[i] = new Lavatrici("Lavatrice " + (i + 1), false, null, 1000, 500, 0);
-            }
-
+            lavatriciArray[i] = new Lavatrici("Lavatrice " + (i + 1), true, null,1000,500, 0);
+            lavatriciArray[i].randomLoad();
         }
-
         for (int i = 0; i < 5; i++)
         {
-            Random rnd = new Random();
-            int active = rnd.Next(1, 3);
-            int active2 = rnd.Next(1, 3);
-            if (active == 1)
-            {
-                //questa funzione è riutilizabile in seguito quando vorremo attivare una lavatrice prendendo un valore da 1 a 2 e un indice prende un programma e lo fa eseguire all'asciugatrice 
-                loadMachineAsciugatrice(active2, i);
-            }
-            else
-            {
-                // istazione un asciugatrice vuota
-                asciugatriciArray[i] = new Asciugatrici("Ascigatrice " + (i + 1), false, null, 0);
-            }
-
+            asciugatriciArray[i] = new Asciugatrici("Asciugatrice " + (i + 1), true, null, 0);
+            asciugatriciArray[i].randomLoad();
         }
     }
 
@@ -137,15 +105,13 @@ public class Lavanderia
     {
         //chiedo all'utente di quale macchina vuole sapere i dettagli
         Console.WriteLine("seleziona una macchina per le info");
-        Console.WriteLine("1 Lavatrice");
-        Console.WriteLine("2 Asciugatrice");
-
+        Console.WriteLine("1) Lavatrice");
+        Console.WriteLine("2) Asciugatrice");
         int response = Convert.ToInt32(Console.ReadLine());
-
-        Console.WriteLine("seleziona la macchine");
+        Console.WriteLine("seleziona la macchine"); Console.WriteLine();
         int selected = Convert.ToInt32(Console.ReadLine());
-        
-        if(response == 1){
+        Console.WriteLine();
+        if (response == 1){
            
             Console.WriteLine("----- " + lavatriciArray[selected - 1].Nome + " -----");
             if(lavatriciArray[selected - 1].Stato)
@@ -156,7 +122,7 @@ public class Lavanderia
             {
                 Console.WriteLine("Stato : disattivata");
             }    
-            if (lavatriciArray[selected - 1].ProgrammaSelezionato != null)
+            if (lavatriciArray[selected - 1].ProgrammaSelezionato.Tipo != "Spento")
             {
                 Console.WriteLine("Programma selezionato : " + lavatriciArray[selected - 1].ProgrammaSelezionato.Tipo);
                 Console.WriteLine("Programma durata : " + lavatriciArray[selected - 1].ProgrammaSelezionato.Durata);
@@ -179,7 +145,8 @@ public class Lavanderia
             {
                 Console.WriteLine("Stato : disattivata");
             }
-            if (asciugatriciArray[selected - 1].ProgrammaSelezionato != null)
+            
+            if (asciugatriciArray[selected - 1].ProgrammaSelezionato.Tipo != "Spento")
             {
                 Console.WriteLine("Programma selezionato : " + asciugatriciArray[selected - 1].ProgrammaSelezionato.Tipo);
                 Console.WriteLine("Programma durata : " + asciugatriciArray[selected - 1].ProgrammaSelezionato.Durata);
@@ -191,48 +158,6 @@ public class Lavanderia
         }
 
     }
-
-    //questa funzione prende un int che è il tipo di programma e un index che è la macchina
-    public void loadMachineLavatrice(int load, int index)
-    {
-        if (load == 1)
-        {
-            lavatriciArray[index] = new Lavatrici("Lavatrice " + (index + 1), true, rinnovante, 1000, 500, rinnovante.Durata);
-            lavatriciArray[index].QuantitàDiDetersivo -= rinnovante.ConsumoDetersivo;
-            lavatriciArray[index].QuantitàDiAmmorbidente -= rinnovante.ConsumoAmmorbidente;
-            lavatriciArray[index].GuadagnoMacchine += rinnovante.Costo;
-        }
-        else if (load == 2)
-        {
-            lavatriciArray[index] = new Lavatrici("Lavatrice " + (index + 1), true, sgrassante, 1000, 500, sgrassante.Durata);
-            lavatriciArray[index].QuantitàDiDetersivo -= sgrassante.ConsumoDetersivo;
-            lavatriciArray[index].QuantitàDiAmmorbidente -= sgrassante.ConsumoAmmorbidente;
-            lavatriciArray[index].GuadagnoMacchine += sgrassante.Costo;
-        }
-        else
-        {
-            lavatriciArray[index] = new Lavatrici("Lavatrice " + (index + 1), true, rinfrescante, 1000, 500, rinfrescante.Durata);
-            lavatriciArray[index].QuantitàDiDetersivo -= rinfrescante.ConsumoDetersivo;
-            lavatriciArray[index].QuantitàDiAmmorbidente -= rinfrescante.ConsumoAmmorbidente;
-            lavatriciArray[index].GuadagnoMacchine += rinfrescante.Costo;
-        }
-
-    }
-    public void loadMachineAsciugatrice(int load, int index)
-    {
-        if (load == 1)
-        {
-            asciugatriciArray[index] = new Asciugatrici("Asciugatrice " + (index + 1), true, rapido, rinnovante.Durata);
-            asciugatriciArray[index].GuadagnoMacchine += rapido.Costo;
-        }
-        else
-        {
-            asciugatriciArray[index] = new Asciugatrici("Asciugatrice " + (index + 1), true, intenso, rinfrescante.Durata);
-            asciugatriciArray[index].GuadagnoMacchine += intenso.Costo;
-        }
-
-    }
-
     //calcolo del saldo
     public float Saldo()
     {
@@ -257,17 +182,36 @@ public class Lavatrici
         QuantitàDiDetersivo = quantitàDiDetersivo;
         QuantitàDiAmmorbidente = quantitàDiAmmorbidente;
         DurataDelLavaggio = durataDelLavaggio;
+
+        loads = new Programmi[4];
+        loads[0] = new Programmi("Rinfrescante", 2, 20, 20, 5);
+        loads[1] = new Programmi("Rinnovante", 3, 40, 40, 10);
+        loads[2] = new Programmi("Sgrassante", 4, 60, 60, 15);
+        loads[3] = new Programmi("Spento", 0, 0, 0, 0);
     }
 
+   
     public string Nome { get; private set; }
     public bool Stato{ get; set; }
     public Programmi ProgrammaSelezionato { get; set; }
     public int QuantitàDiDetersivo { get; set; }
     public int QuantitàDiAmmorbidente { get; set; }
     public int DurataDelLavaggio { get; set; }
-
     public int GuadagnoMacchine { get; set; }
 
+    public Programmi[] loads;
+
+    public void randomLoad() {
+
+        Random rnd = new Random();
+        int programs = rnd.Next(0, 4);
+        ProgrammaSelezionato = loads[programs];
+
+        if(loads[programs].Tipo == "Spento")
+        {
+            Stato = false;
+        }
+    }
 }
 
 public class Programmi
@@ -299,6 +243,12 @@ public class Asciugatrici
         Stato = stato;
         ProgrammaSelezionato = programmaSelezionato;
         DurataDelLavaggio = durataDelLavaggio;
+
+
+        loads = new Programmi[3];
+        loads[0] = new Programmi("Intenso", 4, 20, 0, 0);
+        loads[1] = new Programmi("Rapido", 2, 20, 0, 0); ;
+        loads[2] = new Programmi("Spento", 0, 0, 0, 0);
     }
 
     public string Nome { get; private set; }
@@ -307,4 +257,19 @@ public class Asciugatrici
     public int DurataDelLavaggio { get; set; }
 
     public int GuadagnoMacchine { get; set; }
+
+    public Programmi[] loads;
+
+
+    public void randomLoad()
+    {
+        Random rnd = new Random();
+        int programs = rnd.Next(0, 3);
+        ProgrammaSelezionato = loads[programs];
+
+        if (loads[programs].Tipo == "Spento")
+        {
+            Stato = false;
+        }
+    }
 }
