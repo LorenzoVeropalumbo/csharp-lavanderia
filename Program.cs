@@ -135,17 +135,18 @@ public class Lavanderia
 
     public void MachineDetail()
     {
+        //chiedo all'utente di quale macchina vuole sapere i dettagli
         Console.WriteLine("seleziona una macchina per le info");
         Console.WriteLine("1 Lavatrice");
         Console.WriteLine("2 Asciugatrice");
 
         int response = Convert.ToInt32(Console.ReadLine());
 
+        Console.WriteLine("seleziona la macchine");
+        int selected = Convert.ToInt32(Console.ReadLine());
+        
         if(response == 1){
-            
-            Console.WriteLine("seleziona la lavatrice");
-            int selected = Convert.ToInt32(Console.ReadLine());
-
+           
             Console.WriteLine("----- " + lavatriciArray[selected - 1].Nome + " -----");
             if(lavatriciArray[selected - 1].Stato)
             {
@@ -168,8 +169,6 @@ public class Lavanderia
         }
         else
         {
-            Console.WriteLine("seleziona l' asciugatrice");
-            int selected = Convert.ToInt32(Console.ReadLine());
 
             Console.WriteLine("----- " + asciugatriciArray[selected - 1].Nome + " -----");
             if (asciugatriciArray[selected - 1].Stato)
@@ -193,6 +192,7 @@ public class Lavanderia
 
     }
 
+    //questa funzione prende un int che è il tipo di programma e un index che è la macchina
     public void loadMachineLavatrice(int load, int index)
     {
         if (load == 1)
@@ -233,7 +233,8 @@ public class Lavanderia
 
     }
 
-    public int Saldo()
+    //calcolo del saldo
+    public float Saldo()
     {
         int saldo = 0;
         for (int i = 0; i < lavatriciArray.Length; i++)
@@ -242,7 +243,7 @@ public class Lavanderia
             saldo += asciugatriciArray[i].GuadagnoMacchine;
         }
 
-        return saldo;
+        return saldo/2;
     }
 }
 
