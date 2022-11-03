@@ -2,12 +2,15 @@
 using System.Diagnostics;
 using System.Reflection.PortableExecutable;
 
+//instazio la lavanderia
 Lavanderia Bella = new Lavanderia();
+//creazione del loop
 bool loop = true;
-int credito = 0;
+
 while (loop)
 {
     //Console.WriteLine("Il Tuo Credito è di : " + credito + "gettoni");
+    //Chiedo all'utente cosa vuole fare
     Console.WriteLine("Scegli un opzione");
     Console.WriteLine("1) Vedi lo stato delle macchine");
     Console.WriteLine("2) Dettagli macchine");
@@ -26,6 +29,9 @@ while (loop)
         case 3:
             Console.WriteLine(Bella.Saldo() + " euro");
             break;
+        case 4:
+            loop = false;
+            break;
         default:
             Console.WriteLine("Non è stata selezionata un opzione valida");
             break;
@@ -36,9 +42,11 @@ while (loop)
 
 public class Lavanderia
 {
+    //Creazione dell'array che conterrà gli oggetti
     private Lavatrici[] lavatriciArray;
     private Asciugatrici[] asciugatriciArray;
 
+    //instazio i programmi cosi da poterli inserire nelle lavatrici appena create
     public Programmi rinfrescante = new Programmi("Rinfrescante", 2, 20, 20, 5);
     public Programmi rinnovante = new Programmi("Rinnovante", 3, 40, 40, 10);
     public Programmi sgrassante = new Programmi("Sgrassante", 4, 60, 60, 15);
@@ -50,17 +58,23 @@ public class Lavanderia
         lavatriciArray = new Lavatrici[5];
         asciugatriciArray = new Asciugatrici[5];
 
+        //instazio le lavatrici
         for (int i = 0; i < 5; i++)
         {
             Random rnd = new Random();
+            // generazione del booleano per capire se la lavatrice è attiva
             int active = rnd.Next(1, 3);
-            int active2 = rnd.Next(1, 4);
+            // genero un random per sapere quale programma è attivo
+            int programma = rnd.Next(1, 4);
+
             if (active == 1)
             {
-                loadMachineLavatrice(active2, i);
+                //questa funzione è riutilizabile in seguito quando vorremo attivare una lavatrice prendendo un valore da 1 a 3 e un indice prende un programma e lo fa eseguire alla lavatrice 
+                loadMachineLavatrice(programma, i);
             }
             else
             {
+                // istanzio la lavatrice disattiva
                 lavatriciArray[i] = new Lavatrici("Lavatrice " + (i + 1), false, null, 1000, 500, 0);
             }
 
@@ -73,10 +87,12 @@ public class Lavanderia
             int active2 = rnd.Next(1, 3);
             if (active == 1)
             {
+                //questa funzione è riutilizabile in seguito quando vorremo attivare una lavatrice prendendo un valore da 1 a 2 e un indice prende un programma e lo fa eseguire all'asciugatrice 
                 loadMachineAsciugatrice(active2, i);
             }
             else
             {
+                // istazione un asciugatrice vuota
                 asciugatriciArray[i] = new Asciugatrici("Lavatrice " + (i + 1), false, null, 0);
             }
 
@@ -87,6 +103,7 @@ public class Lavanderia
     {
         Console.WriteLine();
         Console.WriteLine("--- lavatrici presenti ---");
+        //scorro l'arrey delle lavatrici
         for (int i = 0; i < lavatriciArray.Length; i++)
         {
             if (lavatriciArray[i].Stato)
@@ -113,31 +130,6 @@ public class Lavanderia
         Console.WriteLine();
     }
 
-    //public void UseMachine()
-    //{
-    //    Console.WriteLine("seleziona una macchina");
-    //    Console.WriteLine("1 Lavatrice");
-    //    Console.WriteLine("2 Asciugatrice");
-
-    //    int response = Convert.ToInt32(Console.ReadLine());
-
-    //    Console.WriteLine("seleziona la lavatrice");
-    //    int selected = Convert.ToInt32(Console.ReadLine());
-
-    //    Console.WriteLine("----- " + lavatriciArray[selected - 1].Nome + " -----");
-    //    if (lavatriciArray[selected - 1].Stato)
-    //    {
-    //        Console.WriteLine("la lavatrice è attualmente in uno selezionane un altra");
-    //    }
-    //    else
-    //    {
-    //        Console.WriteLine("seleziona il programma");
-    //        Console.WriteLine("rinfrescante");
-    //        Console.WriteLine("rinnovante");
-    //        Console.WriteLine("sgrassante");
-    //        string program = Console.ReadLine();
-    //    }
-    //}
     public void MachineDetail()
     {
         Console.WriteLine("seleziona una macchina per le info");
