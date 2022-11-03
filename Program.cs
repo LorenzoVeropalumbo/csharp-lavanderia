@@ -106,6 +106,7 @@ public class Lavanderia
         //scorro l'arrey delle lavatrici
         for (int i = 0; i < lavatriciArray.Length; i++)
         {
+            // se lo stato è true dico che la lavatrice è in funzione
             if (lavatriciArray[i].Stato)
             {
                 Console.WriteLine(lavatriciArray[i].Nome + " - Stato in funzione lavaggio");
@@ -116,11 +117,13 @@ public class Lavanderia
             }
         }
         Console.WriteLine("--- asciugatrici presenti ---");
+        //scorro l'arrey delle asciugatrici
         for (int i = 0; i < asciugatriciArray.Length; i++)
         {
+            // se lo stato è true dico che l' asciugatrice è in funzione
             if (asciugatriciArray[i].Stato)
             {
-                Console.WriteLine(asciugatriciArray[i].Nome + " - Stato in funzione lavaggio");
+                Console.WriteLine(asciugatriciArray[i].Nome + " - Stato in funzione asciuga");
             }
             else
             {
