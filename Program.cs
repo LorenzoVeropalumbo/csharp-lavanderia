@@ -204,7 +204,7 @@ public class Lavatrici
     public void randomLoad() {
 
         Random rnd = new Random();
-        int programs = rnd.Next(0, 4);
+        int programs = rnd.Next(0, loads.Length);
         ProgrammaSelezionato = loads[programs];
 
         if(loads[programs].Tipo == "Spento")
@@ -264,7 +264,7 @@ public class Asciugatrici
     public void randomLoad()
     {
         Random rnd = new Random();
-        int programs = rnd.Next(0, 3);
+        int programs = rnd.Next(0, loads.Length);
         ProgrammaSelezionato = loads[programs];
 
         if (loads[programs].Tipo == "Spento")
