@@ -207,6 +207,9 @@ public class Lavatrici
         int programs = rnd.Next(0, loads.Length);
         ProgrammaSelezionato = loads[programs];
         GuadagnoMacchine += ProgrammaSelezionato.Costo;
+        QuantitàDiDetersivo -= ProgrammaSelezionato.ConsumoDetersivo;
+        QuantitàDiAmmorbidente -= ProgrammaSelezionato.ConsumoAmmorbidente;
+
         if (loads[programs].Tipo == "Spento")
         {
             Stato = false;
